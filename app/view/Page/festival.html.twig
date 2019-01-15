@@ -1,0 +1,56 @@
+{% extends 'Layout/layout.html.twig' %}
+
+{% block title %}
+    {{ parent() }} - Description
+{% endblock %}
+
+{% block nav %}
+<header>
+    <div class="h175px bgHeader2 dFlex flexDR justifySA alignIC">
+        <a href="" class=""><img src="assets/images/logo.svg" width="150px" height="150px"></a>
+    <nav class="color0 dFlex flexDR">
+          
+            <ul class="dFlex flexDR alignIC justifySB w250px fs14">
+                <li class="bold ff0 pad fs18"><a href="">Home</a></li>
+                <li class="bold ff0 pad fs18"><a href="mailto:thomas.m@codeur.online">Contact</a></li>
+            </ul>
+           
+    </nav>
+    </div>    
+</header>
+
+{% endblock %}
+
+{% block content %}
+    <section class="h100vh bgSection dFlex justifyCC alignIC">
+        <div class="h60vh w60vw dFlex flexDR boxS">
+            
+                <img src="assets/images/photos/{{ infosFest.image }}" class="h100 bgC h100 maxw50">
+
+            
+                <div class="bgHeader w66 h100  dFlex justifyCC alignIC">
+                    <div class="dFlex h80 w80 justifySB flexDC">
+                        <div class="">
+                            
+                            
+                            <h3 class="color2 fs42 bold ff0 padB l-h50">{{ infosFest.nom_manifestation }}</h3>
+                            <p class="ff0 xbold color8 fs20 padB10"><i class="fas fa-calendar-alt ff0 xbold color8 fs22 padB10 pr20"></i>{{ infosFest.Date_debut }} - {{ infosFest.date_fin }} </p>
+                            <p class="ff0 light color8 fs14 padB20">{{ infosFest.commune }}  - {{ infosFest.departement }}</p>
+                            <div id="demo-output" class="ff0 regular color1 fs18">
+                                <p></p>
+                            </div>
+
+                        </div>
+                        <div class="dFlex justifySB">   
+                                <a href="{{ infosFest.site_web }}" target="_blank" class="color0"><button name="site" label="" class="ff0">Voir le site</button></a>
+                            <div>
+                                <img class="h35px w35px" src="assets/images/facebook.png">
+                                <img class="h35px w35px" src="assets/images/twitter.png">
+                                <img class="h35px w35px"src="assets/images/instagram-icon.png">
+                            </div>
+                        </div>
+                    </div>  
+                </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'Layout/layout.html.twig' %}
+
+{% block title %}
+    {{ parent() }} - Page Introuvable</title>
+{% endblock %}
+
+{% block content %}
+<header class="h20vh">
+    <div class="h100 bgHeader2 dFlex flexDR justifySA alignIC">
+        <a href="index.php" class=""><img src="assets/images/logo.svg" width="150px" height="150px"></a>
+    </div>    
+</header>
+<section class="h60vh w100 overFH dFlex justifyCC alignIC ">
+			<div class="w100 h100">
+				<div class="h100 bg404"></div>			
+			</div>
+		
+		<div class="posabs dFlex flexDC justifyCC alignIC h60vh ff0">
+		<div class="dFlex justifyCC alignIC fs500 flexDR background">
+			4
+			<img src="assets/images/vinyl.png" class="h300px w300px vinyl posabs">
+			<img src="assets/images/platine.png" class="h300px padL67px">
+			4
+		</div>
+		<div class="dFlex alignFE fs78 background">Not Found</div>
+		</div>
+</section>
+{% endblock %}

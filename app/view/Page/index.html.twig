@@ -1,0 +1,139 @@
+{% extends 'Layout/layout.html.twig' %}
+
+{% block title %}
+    {{ parent() }} - Home
+{% endblock %}
+{% block nav %}
+
+<header>
+    <nav class="dFLex flexDC bgHead h750px" role="navigation">
+        <div class="dFlex alignCC justifyCC padB20 ">
+            <a href="" class=""><img src="assets/images/logo.svg" class="mt30" width="150px" height="150px"></a>
+        </div>
+        <div class="dFlex h100px vaB justifyCC alignCC flexDR alignIC ">
+            <p class="ff0 fs36 color0 pad">Venez</p>
+            <p class="ff1 fs78 background pad">festoyer</p>
+           
+        </div>
+        <div class="dFlex h100px vaB justifyCC alignCC flexDR alignIC"> 
+            <p class="ff0 fs22 color0 light">EN BOURGOGNE FRANCHE-COMTÉ</p>
+        </div>
+        <div class="dFlex h100px vaB justifyCC alignCC flexDR alignIC"> 
+            <form class="h45px bgHeader br m30" method="POST" action="">
+                <select name="name" id="" class="bRG h45px bnone bgHeader w175px color7 txtlc ">
+                    <option value="">Nom du festival</option>
+                    {% for info in infosFormSearch %}
+                        <option value="{{ info.nom_manifestation }}">{{ info.nom_manifestation }}</option>
+                    {% endfor %}
+                </select>
+                <select name="type" id="" class="h45px bnone bgHeader w175px color7 txtlc ">
+                    <option value="">Type</option>
+                        {% for type in types %}
+                            <option value="{{ type.id }}">{{ type.domaine }}</option>
+                        {% endfor %}
+                </select>
+                <select name="date" id="" class="h45px bnone bgHeader w175px color7 txtlc">
+                    <option value="">Date</option>
+                        {% for month in months %}
+                            <option value="{{ loop.index }}">{{ month }}</option>
+                        {% endfor %}
+                </select>
+                <input type="submit" name="searchFestival" value=">" class="bgSub bRD color0 h45px bnone w50px">
+            </form>
+        </div>
+    </nav>
+</header>
+
+{% endblock %}
+{% block content %}
+    <section class=" bgSection dFlex justifyCC alignIC flexDR">
+        {# <div class="dNone LTCalc posabs" id="smash"> 
+            <img src="assets/images/Smash_Rija2.png">
+            <audio id="smashA"  class="dNone">
+					<source src="assets/images/Foe.mp3"/>
+			</audio>
+        </div> #}
+        <div class="dFlex w100vw ">
+            <div id="alaffiche" class="dFlex flexDC bgHeader w60 transition">
+                <div class="dFlex justifySB pad30b">
+                    <h1 class="ff1 color4 fs42 regular padB">A l'affiche</h1>
+                </div>
+                {% for festival in festivals %}
+                    <div class="pRel bbFest mar50 transition">
+                        <div class="dFlex">
+                        <img src="assets/images/photos/{{ festival.image }}" class="marImg" width="100px" height="100px">
+                        <article class="dFlex flexDC marImg justifyCC">
+                            <p class="ff0 xbold color2 fs22 padB10">{{ festival.nom_manifestation }}</p>
+                            <p class="ff0 xbold color8 fs14 padB10">{{ festival.Date_debut}} - {{ festival.date_fin}} </p>
+                            <p class="ff0 light color1 fs14">{{ festival.commune }} - {{ festival.departement }}</p>
+                    </div>
+                        <div class="dFlex">
+                                <a href="festival/{{ festival.id }}"><button class="readMore ff0">En savoir plus</button></a>
+                                <button  data-coord="{{ festival.coordonnees_gps }}" class="btnMap ff0">Voir sur la carte</button>
+                        </div>
+                        </article>
+                    </div>
+                {% endfor %}
+            </div>
+            <div id="map" class="dFlex flexDC bgHeader w40 pad30">
+
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+            var mymap = L.map('map').setView([46.52863469527167,2.43896484375], 6 );
+
+            L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+            maxZoom: 22,
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+            '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+            'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            id: 'mapbox.streets',
+            }).addTo(mymap);
+            
+            $(document).on('click','.btnMap',function(){
+                var coords = ($(this).attr("data-coord")).split(',');
+                mymap.setView([coords[0], coords[1]], 11);
+            });
+
+        var groupMarkers = L.markerClusterGroup({
+            iconCreateFunction: function(cluster) {
+                return L.divIcon({ 
+                    html: cluster.getChildCount(), 
+                    className: 'mycluster',
+                    iconSize: null 
+                });
+            }
+        });
+        
+        var myIcon = L.icon({
+            iconUrl: 'assets/images/marker-icon.svg',
+            iconSize: [25,41],
+        });
+
+        {% for festival in festivals %}
+            var popup = "<div>" +
+                            "<h4>{{ festival.nom_manifestation }}</h4>" +
+                            "<h3>{{ festival.Date_debut }} - {{ festival.date_fin }}</h5>" +
+                            "<h6>{{ festival.commune }}</p>" +
+                            "<a href='festival/{{ festival.id }}'>Voir le festival</a>" +
+                        "</div>";
+            var marker = L.marker([{{ festival.coordonnees_gps }}], {
+                icon: myIcon
+            }).bindPopup(popup)
+
+            groupMarkers.addLayer(marker);
+        {% endfor %}
+
+        mymap.addLayer(groupMarkers);
+        
+        $( function() {
+            $( "#datepicker" ).datepicker();
+          } );
+    </script>
+{% endblock %}
